@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>旋转木马轮播图</title>
+    <link rel="stylesheet" href="css/css.css"/>
+    <script src="../jquery-1.12.4.min.js"></script>
+    <script>
+        $(function () {
+
+
+            //标注了每个图片要运动到的位置
+            var config = [
+                {
+                    width: 400,
+                    top: 20,
+                    left: 50,
+                    opacity: 0.2,
+                    zIndex: 2
+                },//0
+                {
+                    width: 600,
+                    top: 70,
+                    left: 0,
+                    opacity: 0.8,
+                    zIndex: 3
+                },//1
+                {
+                    width: 800,
+                    top: 100,
+                    left: 200,
+                    opacity: 1,
+                    zIndex: 4
+                },//2
+                {
+                    width: 600,
+                    top: 70,
+                    left: 600,
+                    opacity: 0.8,
+                    zIndex: 3
+                },//3
+                {
+                    width: 400,
+                    top: 20,
+                    left: 750,
+                    opacity: 0.2,
+                    zIndex: 2
+                },//4
+            ];//config其实就是一个配置单 规定了每张图片的大小位置层级透明度
+            //标注了每个图片要运动到的位置
+
+            // 1.获取元素
+            var $box = $('#wrap');//最外边大盒子
+            var $slide = $('#slide')//slide盒子
+            var $list = $('li');//所有的li
+            var $arrowBox = $('#arrow');//箭头的盒子
+            var $l_arrow = $('#arrLeft');//左箭头
+            var $r_arrow = $('#arrRight');//右箭头
+
+
+            // 2.设置鼠标移入移出盒子显示箭头
+            $box.mouseenter(function () {
+                $arrowBox.stop().animate({'opacity': 1});
+            });
+            $box.mouseleave(function () {
+                $arrowBox.stop().animate({'opacity': 0});
+            });
+
+            // 3.设置每个li的默认样式
+            $list.each(function (index, ele) {
+                $(this).stop().animate(config[index]);
+            });
+
+            // 4.给右箭头盒子添加点击事件
+            $r_arrow.click(function () {
+                //点击按钮后,让数组的第一个元素跑到最后面
+                config.push(config.shift());
+                //把改变后的样式顺序重新赋值给每个li
+                $list.each(function (index, ele) {
+                    $(this).stop().animate(config[index]);
+                });
+            });
+            // 5.给右箭头添加点击事件
+            $l_arrow.click(function () {
+                //点击左按钮后,让配置文件的最后一个跑到第一个位置
+                config.unshift(config.pop());
+                $list.each(function (index, ele) {
+                    $(this).stop().animate(config[index]);
+                });
+            });
+
+            // //因为重新定义li的样式用了很多次,所以将其封装成一个函数
+            // function changeConfig() {
+            //
+            // }
+
+        });
+    </script>
+</head>
+<body>
+<div class="wrap" id="wrap">
+    <div class="slide" id="slide">
+        <ul>
+            <li><a href="#"><img src="images/slidepic1.jpg" alt=""/></a></li>
+            <li><a href="#"><img src="images/slidepic2.jpg" alt=""/></a></li>
+            <li><a href="#"><img src="images/slidepic3.jpg" alt=""/></a></li>
+            <li><a href="#"><img src="images/slidepic4.jpg" alt=""/></a></li>
+            <li><a href="#"><img src="images/slidepic5.jpg" alt=""/></a></li>
+        </ul>
+        <div class="arrow" id="arrow">
+            <a href="javascript:;" class="prev" id="arrLeft"></a>
+            <a href="javascript:;" class="next" id="arrRight"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
